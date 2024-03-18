@@ -136,8 +136,6 @@ for(sample.name in sample.list){
   all.samples[[sample.name]] <- sample
 }
 
-respath <- "/add/path/here/"
-
 for(sample.name in sample.list){
   print(sample.name)
   saveRDS(object = all.samples[[sample.name]], file=file.path(respath, "sample-level-atac-rds", paste0(sample.name, ".rds")))
@@ -173,36 +171,39 @@ Annotation(combined) <- annotations
 combined <- NucleosomeSignal(combined)
 combined <- TSSEnrichment(combined)
 
+combined$pct_reads_in_peaks <- combined$atac_peak_region_fragments / combined$atac_fragments * 100
+
 VlnPlot(
   object = combined,
-  features = c("nCount_ATAC", "TSS.enrichment", "nucleosome_signal"),
+  features = c("nCount_ATAC", "TSS.enrichment", "nucleosome_signal", "pct_reads_in_peaks"),
   ncol = 4,
   pt.size = 0
 )
 
 
-combined <- subset(
+qc_combined <- subset(
   x = combined,
-  subset = nCount_ATAC < 500000 &
+  subset = nCount_ATAC < 100000 &
     nCount_ATAC > 1000 &
     nucleosome_signal < 2 &
-    TSS.enrichment > 1
+    TSS.enrichment > 3 & 
+    pct_reads_in_peaks >15
 )
 
-combined <- RunTFIDF(combined)
-combined <- FindTopFeatures(combined, min.cutoff = 20)
-combined <- RunSVD(combined)
-combined <- RunUMAP(combined, dims = 2:50, reduction = 'lsi')
+qc_combined <- RunTFIDF(qc_combined)
+qc_combined <- FindTopFeatures(qc_combined, min.cutoff = 20)
+qc_combined <- RunSVD(qc_combined)
+qc_combined <- RunUMAP(qc_combined, dims = 2:50, reduction = 'lsi')
 
-p1 <- DimPlot(combined, group.by = 'dataset', pt.size = 0.1)
-p2 <- DimPlot(combined, group.by = 'highlevel_annotation', pt.size = 0.1)
+p1 <- DimPlot(qc_combined, group.by = 'dataset', pt.size = 0.1)
+p2 <- DimPlot(qc_combined, group.by = 'highlevel_wtop', pt.size = 0.1)
 p1 | p2
 
-combined <- RegionStats(object=combined, genome = BSgenome.Hsapiens.UCSC.hg38, assay="ATAC")
-saveRDS(object = combined, file = file.path(respath, "combined_atac.rds"))
+qc_combined <- RegionStats(object=qc_combined, genome = BSgenome.Hsapiens.UCSC.hg38, assay="ATAC")
+saveRDS(object = qc_combined, file = file.path(respath, "combined_atac.rds"))
 
-subset_cells <- colnames(combined)[which(combined@meta.data$refined_wcancer %in% c("cNMF_1","cNMF_3","cNMF_4","Carcinoma_undefined"))]
-malcombined <- subset(x = combined, cells=subset_cells)
+subset_cells <- colnames(qc_combined)[which(qc_combined@meta.data$highlevel_refined %in% c("Carcinoma"))]
+malcombined <- subset(x = qc_combined, cells=subset_cells)
 
 malcombined <- RunTFIDF(malcombined)
 malcombined <- FindTopFeatures(malcombined, min.cutoff = 20)
@@ -212,13 +213,17 @@ malcombined <- RunUMAP(malcombined, dims = 2:50, reduction = 'lsi')
 saveRDS(object = malcombined, file = file.path(respath, "malignant_combined_atac.rds"))
 
 p1 <- DimPlot(malcombined, group.by = 'dataset', pt.size = 0.1)
-p2 <- DimPlot(malcombined, group.by = 'refined_wcancer', pt.size = 0.1)
+p2 <- DimPlot(malcombined, group.by = 'highlevel_wtop', pt.size = 0.1)
 p1 | p2
+
+#### CAREFUL, TFBSTools currently breaks the rest of Signac/Seurat, 
+#only load library for the part where it's necessary
+#library(TFBSTools)
 
 malcombined <- readRDS(file = file.path(respath, "malignant_combined_atac.rds"))
 
 pfm <- getMatrixSet(
-  x = JASPAR2020,
+  x = JASPAR2022,
   opts = list(collection = "CORE", tax_group = 'vertebrates', all_versions = FALSE)
 )
 
@@ -229,69 +234,81 @@ malcombined <- AddMotifs(
   pfm = pfm
 )
 
-#### WILL BE USEFUL FOR SEACELL COMPUTATION
-# Scan the DNA sequence of each peak for the presence of each motif
-motif.matrix <- CreateMotifMatrix(
-  features = StringToGRanges(rownames(malcombined), sep = c(":", "-")),
-  pwm = pfm,
-  genome = BSgenome.Hsapiens.UCSC.hg38,
-  score = TRUE,
-  sep = c(":", "-"),
-  use.counts = FALSE
-)
-motif_pwm = as.matrix(motif.matrix)
-write.csv(motif_pwm, "/add/path/here/motif_pwm_score.csv")
+saveRDS(object = malcombined, file = file.path(respath, "malignant_combined_atac.rds"))
 
+####### 
 
-Idents(malcombined) <- "refined_wcancer"
+closestfeat <- ClosestFeature(malcombined, rownames(malcombined))
+write.csv(closestfeat, file=file.path(respath,"peaks_closestfeatures.csv"))
 
-diffpeakdir <- "/add/path/here"
+malcombined@meta.data$highlevel_wtop <- factor(malcombined@meta.data$highlevel_wtop,levels=c("cNMF_1","cNMF_2","cNMF_3","cNMF_4","cNMF_5","Carcinoma"))
 
-diffcnmfs <- c("cNMF_1","cNMF_3","cNMF_4")
+Idents(malcombined) <- "highlevel_wtop"
 
-for(id.1 in diffcnmfs){
-  da_peaks <- FindMarkers(
-    object = malcombined,
-    ident.1 = id.1,
-    ident.2 = setdiff(diffcnmfs, c(id.1)),
-    only.pos = TRUE,
-    test.use = 'LR',
-    min.pct = 0.05,
-    latent.vars = 'nCount_ATAC'
-  )
-  
-  write.csv(da_peaks, file=file.path(diffpeakdir,paste0(id.1,".csv")))
-  
-  top.da.peak <- rownames(da_peaks[da_peaks$p_val < 0.005, ])
-  
-  enriched.motifs <- FindMotifs(
-    object = malcombined,
-    features = top.da.peak
-  )
-  
-  write.csv(enriched.motifs, file=file.path(diffpeakdir,paste0(id.1,"_enrichedmotifs.csv")))
-}
-
-for(id.1 in diffcnmfs){
-  da_peaks <- read.csv(file.path(diffpeakdir,paste0(id.1,".csv")), row.names = 1)
-  openpeaks <- rownames(da_peaks[da_peaks$p_val_adj <0.05 & da_peaks$avg_log2FC > 1.5, ])
-  closestfeat <- ClosestFeature(malcombined, openpeaks)
-  write.csv(closestfeat, file=file.path(diffpeakdir,paste0(id.1,"_closestfeatures.csv")))
-}
-
-openpeaks <- rownames(da_peaks[da_peaks$avg_log2FC > 3, ])
-closestfeat <- ClosestFeature(malcombined, openpeaks)
+# cNMF3 genes c("PHLDB1", "VIM","FN1","SPARC"),
 CoveragePlot(
   object = malcombined,
-  region = c("RAP1B", "IRAK3","PTPRB"),
+  region = c("AKT2"),
   extend.upstream = 5000,
   extend.downstream = 5000,
   ncol = 1
 )
 
+# cNMF1 genes c("KLK8","KLK6","AKT2")
+CoveragePlot(
+  object = malcombined,
+  region = c("KLK6"),
+  extend.upstream = 5000,
+  extend.downstream = 5000,
+  ncol = 1
+)
+
+# cNMF2 gene c("KIF18B","MKI67")
+CoveragePlot(
+  object = malcombined,
+  region = c("NOTCH3"),
+  extend.upstream = 5000,
+  extend.downstream = 5000,
+  ncol = 1
+)
+
+# cNMF3 gene c("RGS4","SPARC")
+CoveragePlot(
+  object = malcombined,
+  region = c("RGS4"),
+  extend.upstream = 5000,
+  extend.downstream = 5000,
+  ncol = 1
+)
+
+# cNMF4 gene c("BHLHE41")
+CoveragePlot(
+  object = malcombined,
+  region = c("BHLHE41"),
+  extend.upstream = 5000,
+  extend.downstream = 5000,
+  ncol = 1
+)
+
+# cNMF5 gene c("ANXA11","ESRRG","BCL9")
+CoveragePlot(
+  object = malcombined,
+  region = c("BCL9"),
+  extend.upstream = 5000,
+  extend.downstream = 5000,
+  ncol = 1
+)
+# special for subset of ESRRG bc very big gene
+CoveragePlot(
+  object = malcombined,
+  region = c("ESRRG"),
+  extend.upstream = -500000,
+  extend.downstream = 0,
+  ncol = 1
+)
 peaks = CallPeaks(
   object = malcombined,
-  macs2.path = "/Users/josephineyates/opt/anaconda3/envs/spatial/bin/macs2",
-  group.by = 'refined_wcancer')
+  macs2.path = "/add/path/here/bin/macs2",
+  group.by = 'highlevel_wtop')
 
 saveRDS(object = peaks, file = glue('data/single_sample_processing/{sample_id}/objects/{sample_id}_clusterlevel_peaks.rds'))
