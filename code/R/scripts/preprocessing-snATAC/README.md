@@ -12,5 +12,4 @@
 - `basedir <- "/add/path/here/"`
 - `macsdir <- "/add/path/here/"`
 - `respath <- "/add/path/here/"`
-- `write.csv(motif_pwm, "/add/path/here/motif_pwm_score.csv")`
-- `diffpeakdir <- "/add/path/here"`
+- `macs2.path = "/add/path/here/bin/macs2"`
