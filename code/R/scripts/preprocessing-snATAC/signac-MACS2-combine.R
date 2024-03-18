@@ -12,7 +12,7 @@ library(patchwork)
 plan("multicore", workers = 4)
 options(future.globals.maxSize = 50000 * 1024^2) # for 50 Gb RAM
 
-ct.annotations <- read.csv("add/path/here")
+ct.annotations <- read.csv("add/path/here/adata_cNMF_scores_wtop.csv")
 
 basedir <- "/add/path/here/"
 macsdir <- "/add/path/here/"
@@ -218,7 +218,7 @@ p1 | p2
 
 #### CAREFUL, TFBSTools currently breaks the rest of Signac/Seurat, 
 #only load library for the part where it's necessary
-#library(TFBSTools)
+library(TFBSTools)
 
 malcombined <- readRDS(file = file.path(respath, "malignant_combined_atac.rds"))
 
@@ -306,9 +306,3 @@ CoveragePlot(
   extend.downstream = 0,
   ncol = 1
 )
-peaks = CallPeaks(
-  object = malcombined,
-  macs2.path = "/add/path/here/bin/macs2",
-  group.by = 'highlevel_wtop')
-
-saveRDS(object = peaks, file = glue('data/single_sample_processing/{sample_id}/objects/{sample_id}_clusterlevel_peaks.rds'))

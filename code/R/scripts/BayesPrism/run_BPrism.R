@@ -1,13 +1,10 @@
 library(BayesPrism)
 library(Seurat)
-#library(SeuratDisk)
-
-#source TCGA: https://xenabrowser.net/datapages/?dataset=TCGA-ESCA.htseq_counts.tsv&host=https%3A%2F%2Fgdc.xenahubs.net&removeHub=https%3A%2F%2Fxena.treehouse.gi.ucsc.edu%3A443
 
 geneMap <- "/add/path/here"
 path <- "add/path/here"
 
-expr <- "auxiliary_data/tcga/TCGA-ESCA.htseq_counts.tsv"
+expr <- "add/path/here/TCGA-ESCA.htseq_counts.tsv"
 
 seuratObj <- readRDS(paste0(path, "add/path/here/sce.pub.Rds"))
 

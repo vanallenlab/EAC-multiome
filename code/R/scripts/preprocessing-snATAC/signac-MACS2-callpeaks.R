@@ -37,8 +37,8 @@ for(sample.name in sample.list){
   )[-1, ] # remove the first row
   md <- md[md$is_cell==1,]
   
-  counts <- Read10X_h5(paste0("/add/path/here",sample.name,"/filtered_feature_bc_matrix.h5"))
-  fragpath <- paste0("/add/path/here",sample.name,"/atac_fragments.tsv.gz")
+  counts <- Read10X_h5(paste0(basedir,sample.name,"/filtered_feature_bc_matrix.h5"))
+  fragpath <- paste0(basedir,sample.name,"/atac_fragments.tsv.gz")
 
   
   # create ATAC assay and add it to the object

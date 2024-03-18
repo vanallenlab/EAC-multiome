@@ -1,23 +1,22 @@
 library(BayesPrism)
 library(Seurat)
 
-path <- "/add/path/here/"
+path <- "/add/path/here"
 
-expr <- "add/path/here/bulk_preprocessed.csv"
+expr <- "/add/path/here/GSE207526_110.EAC.and.10.Normal.for.GSEA.txt"
 
-seuratObj <- readRDS(paste0(path, "/add/path/here/sce.pub.Rds"))
+seuratObj <- readRDS(paste0(path, "add/path/here/sce.pub.Rds"))
 
-data <- read.table(paste0(path, expr), sep=',', row.names=1, header=TRUE)
+data <- read.table(paste0(path, expr), sep='\t', row.names=1, header=TRUE) 
 
 #prepare data for bayesprism:
 
 bk.dat <- t(data)
+bk.dat <- bk.dat[,2:18845]
 
 ### EAC
 celltypes = seuratObj$subcompartment
 cellstates = seuratObj$cellsubtype
-
-### EAC
 idx_escc <- grep("ESCC-", cellstates)
 idx_eac <- grep("EAC-", cellstates)
 cellstates[c(idx_eac)] <- "EAC"
@@ -26,7 +25,6 @@ celltypes[c(idx_eac,idx_escc)] <- "tumor"
 
 ### EAC
 sc.dat <- as.matrix(t(seuratObj@assays$RNA@counts))
-
 bk.dat <- bk.dat[,!duplicated(colnames(bk.dat))] #remove duplicated genes
 
 #create BP object:
@@ -41,5 +39,5 @@ bp.res <- run.prism(prism=myPrism, n.cores=15, update.gibbs = TRUE)
 
 
 #save the object for later:
-save(bp.res, file=paste0(path, "/add/path/here/eac-carroll.bp.res.RData"))
+save(bp.res, file=paste0(path, "/add/path/here/eac-gse207526.bp.res.RData"))
 
