@@ -12,8 +12,10 @@ Then, one needs to run the scripts in order, as some intermediate files generate
 
 For the snRNA-seq analysis, one needs to 
 - run the preprocessing for each patient ([Instructions](link))
+- run the preprocessing scripts for the external dataset to put them in the right format ([Instructions](link))
 - run the analyses ([Instructions](link))
 - run the pyscenic plus scripts ([Instructions](link))
+- run the pyscenic scripts on external datasets ([Instructions](link))
 - run the scripts for external validation ([Instructions](link))
 
 For the snATAC-seq analysis, one needs to 
@@ -24,14 +26,14 @@ For the snATAC-seq analysis, one needs to
 
 | Dataset             | Link to paper                  | Link to download                 | Remarks          | 
 |---------------------|--------------------------------|---------------------------------|------------------|
-| Discovery dataset    | [Yates et al., ???](TBD)    | [Download](http://example.com)  | [Remarks](#)     |
+| Discovery dataset    | [Yates et al., ???](TBD)    | [Download](http://example.com)  |     |
 | Single-cell, Carroll et al.     | [Carroll et al., 2023](https://www.sciencedirect.com/science/article/pii/S1535610823002167?via%3Dihub)    | [Download](https://ega-archive.org/datasets/EGAD00001009401)  | Need to request access to data through EGA     |
 | Bulk, Carroll et al., RNA   | [Carroll et al., 2023](https://www.sciencedirect.com/science/article/pii/S1535610823002167?via%3Dihub)    | [Download](https://ega-archive.org/datasets/EGAD00001009399)  | Need to request access to data through EGA  |
 | Bulk, Carroll et al., Clinical   | [Carroll et al., 2023](https://www.sciencedirect.com/science/article/pii/S1535610823002167?via%3Dihub)     | [Download](https://bitbucket.org/licroxford/carroll_etal_2023/src/master/supplementary_files/Table_S8_papermetadata.xlsx)  | Inoperable cohort info is located [here](https://bitbucket.org/licroxford/carroll_etal_2023/src/master/supplementary_files/SuppInfo_OperablePts_LUD2015scRNAseq.xlsx)   |
 | Single-cell, Croft et al.     | [Croft et al., 2022](https://molecular-cancer.biomedcentral.com/articles/10.1186/s12943-022-01666-x)    | [Download](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE222078)  | Need to request single-cell annotations from author (w.d.croft@bham.ac.uk)    |
 | Bulk, Hoefnagel et al., RNA     | [Hoefnagel et al., 2022](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9496882/)    | [Download](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE207527)  |     |
 | Bulk, Hoefnagel et al., Clinical     | [Hoefnagel et al., 2022](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9496882/)    | NA | Need to request from the author (sanne_hoefnagel@live.nl) |
-| Bulk, TCGA, RNA     | [The Cancer Genome Atlas Research Network, 2017](https://www.nature.com/articles/nature20805)    | [Download](https://xenabrowser.net/datapages/?dataset=TCGA-ESCA.htseq_fpkm-uq.tsv&host=https%3A%2F%2Fgdc.xenahubs.net&removeHub=https%3A%2F%2Fxena.treehouse.gi.ucsc.edu%3A443)  | [Remarks](#)     |
+| Bulk, TCGA, RNA     | [The Cancer Genome Atlas Research Network, 2017](https://www.nature.com/articles/nature20805)    | [Download](https://xenabrowser.net/datapages/?dataset=TCGA-ESCA.htseq_fpkm-uq.tsv&host=https%3A%2F%2Fgdc.xenahubs.net&removeHub=https%3A%2F%2Fxena.treehouse.gi.ucsc.edu%3A443)  |    |
 | Bulk, TCGA, Clinical #1     | [The Cancer Genome Atlas Research Network, 2017](https://www.nature.com/articles/nature20805)    | [Download](https://xenabrowser.net/datapages/?dataset=TCGA-ESCA.GDC_phenotype.tsv&host=https%3A%2F%2Fgdc.xenahubs.net&removeHub=https%3A%2F%2Fxena.treehouse.gi.ucsc.edu%3A443)  | This is the general clinical+phenotypical info   |
 | Bulk, TCGA, Clinical #2     | [The Cancer Genome Atlas Research Network, 2017](https://www.nature.com/articles/nature20805)  | [Download](https://static-content.springer.com/esm/art%3A10.1038%2Fnature20805/MediaObjects/41586_2017_BFnature20805_MOESM91_ESM.xlsx?_gl=1*mw3dke*_ga*OTAwNDk3MDU2LjE3MDg2ODk0Mzk.*_ga_B3E4QL2TPR*MTcxMDc3MDI1My4yMS4wLjE3MTA3NzAzNTcuMC4wLjA.)  | This is the clinical info provided in the original paper    |
 | Bulk, TCGA, Clinical #3     | [The Cancer Genome Atlas Research Network, 2017](https://www.nature.com/articles/nature20805)  | [Download](https://xenabrowser.net/datapages/?dataset=TCGA-ESCA.survival.tsv&host=https%3A%2F%2Fgdc.xenahubs.net&removeHub=https%3A%2F%2Fxena.treehouse.gi.ucsc.edu%3A443)  | This is the survival information|
