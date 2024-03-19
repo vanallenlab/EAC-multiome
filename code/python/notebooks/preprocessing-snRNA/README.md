@@ -12,7 +12,7 @@ All the files require the same input, described here
 ## `Aguirre_XXX.ipynb` or `CCG1153_XXX.ipynb`
 
 - `datapath = pl.Path("/add/path/here/")`: path to the directory where the Cellbender and Scrublet filtered sample-level data are located. (**DWNL**)
-- `gencode_df = pd.read_csv("/add/path/here/gencode_v41_positions.csv",index_col=0).set_index("gene_name")`: this file is a subset of the Gencode annotation v41 that contains "seqname", "gene_name", "start", "end", "strand", and "gene_id".
+- `gencode_df = pd.read_csv("/add/path/here/gencode_v41_positions.csv",index_col=0).set_index("gene_name")`: this file is a subset of the Gencode annotation v41 that contains "seqname", "gene_name", "start", "end", "strand", and "gene_id". (**DWNL**)
 - `infercnv_annot_dir = pl.Path("/add/path/here/infercnv-annotations")`: this is the directory where the inferCNV annotations are saved.
 - `resdir = pl.Path("/add/path/here/")`: this is the directory where the preprocessed sample-level files are saved.
 
