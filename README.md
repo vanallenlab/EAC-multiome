@@ -22,6 +22,22 @@ For the snATAC-seq analysis, one needs to
 - run the prepocessing scripts ([Instructions](link))
 - run BayesPrism for TCGA validation ([Instructions](link))
 
+## Patient ID to sample ID mapping
+
+In the original paper, for simplicity patients are referred to as P1 through P10. In the scripts/notebooks the patients are referred to using their sample ID. The mapping is provided below.
+| Patient ID             | Sample ID                  |
+|---------------------|--------------------------------|
+| P1   | CCG1153_4496262   |
+| P2   | CCG1153_6640539   |
+| P3   | CCG1153_4411   |
+| P4   | Aguirre_EGSFR0074   |
+| P5   | Aguirre_EGSFR0148   |
+| P6   | Aguirre_EGSFR1732   |
+| P7   | Aguirre_EGSFR0128   |
+| P8   | Aguirre_EGSFR1938   |
+| P9   | Aguirre_EGSFR1982   |
+| P10   | Aguirre_EGSFR2218   |
+
 ## Links to data used in the study
 
 | Dataset             | Link to paper                  | Link to download                 | Remarks          | 
@@ -43,4 +59,4 @@ For the snATAC-seq analysis, one needs to
 | Data             | Needed for what script?                  | Description               | Link to download          | 
 |---------------------|--------------------------------|---------------------------------|------------------|
 | Gene Mapping    | R/scripts/BayesPrism/runBPrism.R    | Gene probe map fro the UCSC Xena browser that maps ENCODE to official gene ID |   [Download](https://github.com/ucscXena/xena-GDC-ETL/blob/master/xena_gdc_etl/resources/gencode.v22.annotation.gene.probeMap)  |
-| Gene Mapping    | R/scripts/BayesPrism/runBPrism.R    | Gene probe map fro the UCSC Xena browser that maps ENCODE to official gene ID |   [Download](https://github.com/ucscXena/xena-GDC-ETL/blob/master/xena_gdc_etl/resources/gencode.v22.annotation.gene.probeMap)  |
+| GENCODE annotations   | python/notebooks/preprocessing-snRNA/XXXX.ipynb (where XXX is any sample name) | Subset of gencode annotations v41 |   [Download](TBD) or [link to original GTF file](https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_41/gencode.v41.annotation.gtf.gz)  |
