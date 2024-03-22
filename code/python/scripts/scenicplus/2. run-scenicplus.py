@@ -45,88 +45,17 @@ def main():
     sample_name = args.samplename
     ncpus = args.ncpus
 
-    basedir = pl.Path("/add/path/here")
-    work_dir = pl.Path("/add/path/here")
-    tmp_dir = "/add/path/here"
-    annot_dir = pl.Path("/add/path/here")
+    work_dir = pl.Path("/add/path/here/")
+    tmp_dir = "/add/path/here/"
+    # this corresponds to the folder of Annotation for local SCENIC+ search space run
+    annot_dir = pl.Path("/add/path/here/")
 
-    refined_annotations = pd.read_csv(
-        basedir / "refined_wCNMF_programs_and_sampleid.csv", index_col=0
-    )
-
-    datadir = basedir / "full_scrna_data"
-    adata = sc.read_h5ad(datadir / "full_cohort.h5ad")
-
-    adata.obs = pd.concat(
-        [
-            adata.obs,
-            refined_annotations[
-                ["refined_annotation", "refined_wcancer", "highlevel_annotation"]
-            ],
-        ],
-        axis=1,
-    )
-
-    treatment_mapping = {
-        "Neoadjuvant CROSS": "Neoadj. chemo",
-        "Neoadjuvent carboplatin": "Neoadj. chemo",
-    }
-
-    clinical = pd.read_csv(basedir / "EAC_clinical_info.csv", index_col=0)
-
-    metastatic = (clinical["Tumor?"] == "Yes ") & (
-        clinical["Site"].str.contains("metastasis")
-    )
-    metastatic.name = "Metastatic?"
-    clinical["Metastatic?"] = metastatic
-
-    clinical["Location"] = clinical["Site"].replace(
-        {"GEJ": "Esophagus/GEJ", "Esophagus": "Esophagus/GEJ"}
-    )
-    clinical["Location"][clinical["Location"].str.contains("Liver")] = "Liver"
-    clinical["Location"][clinical["Location"].str.contains("Adrenal")] = "Adrenal gland"
-    clinical["Location"][clinical["Location"].str.contains("Peritoneal")] = "Peritoneum"
-
-    clinical["Stage"] = clinical["Grade/stage"].replace(
-        {
-            "Stage IV ": "IV",
-            "Stage IV": "IV",
-            "Moderately differentiated; ypT1aN0": "I",
-            "Moderately differentiated; pT1aN0": "I",
-            "Poorly differentiated; ypT2N0": "II",
-            "Presented with stage III became stage IV during esophagectomy when pleural metastases were identified": "III/IV",
-        }
-    )
-
-    clinical["Treatment"] = [
-        "Neoadj. chemo",
-        "None",
-        "Neoadj. chemo + ICI + RT",
-        "None",
-        "None",
-        "Chemo + HER2 targeted + ICI",
-        "Neoadj. chemo + HER2 targeted",
-        "Neoadj. chemo + ICI",
-        "None",
-        "Neoadj. chemo + VEGFR2i",
-    ]
-
-    clinical["HER2 status"] = clinical["HER2"].replace({"HER 2 1+": "1+/equivocal"})
-
-    clinical = clinical.sort_values(by=["Tumor?", "Metastatic?", "Location"])
+    adata = sc.read_h5ad("/add/path/here/full_cohort.h5ad")
 
     cistopic_obj = dill.load(open(work_dir / sample_name / "cistopic_obj.pkl", "rb"))
     menr = dill.load(open(work_dir / sample_name / "motifs" / "menr.pkl", "rb"))
 
-    middle_annotations = cistopic_obj.cell_data.copy()
-
-    middle_annotations.highlevel_annotation[
-        middle_annotations.highlevel_annotation == "Carcinoma"
-    ] = np.nan
-
-    middle_annotations = middle_annotations.highlevel_annotation.fillna(
-        middle_annotations["refined_wcancer"]
-    )
+    middle_annotations = cistopic_obj.cell_data["highlevel_celltype"].copy()
 
     smallgroups = middle_annotations.value_counts()[
         (middle_annotations.value_counts()) < 20
@@ -135,7 +64,7 @@ def main():
 
     middle_annotations = middle_annotations.replace(smallgroup_mapping)
 
-    cistopic_obj.cell_data["highlevel_wcancer"] = middle_annotations.str.replace(
+    cistopic_obj.cell_data["highlevel_celltype"] = middle_annotations.str.replace(
         "/", "_"
     )
 
@@ -173,7 +102,7 @@ def main():
         upstream=[1000, 150000],
         downstream=[1000, 150000],
     )
-    tmp_dir = "/add/path/here"
+
     calculate_regions_to_genes_relationships(
         scplus_obj,
         ray_n_cpu=ncpus,
@@ -190,7 +119,6 @@ def main():
     scplus_obj = pickle.load(infile)
     infile.close()
 
-    tmp_dir = "/add/path/here"
     tf_file = "/add/path/here/utoronto_human_tfs_v_1.01.txt"
     calculate_TFs_to_genes_relationships(
         scplus_obj,
@@ -209,7 +137,6 @@ def main():
     scplus_obj = pickle.load(infile)
     infile.close()
 
-    tmp_dir = "/add/path/here"
     build_grn(
         scplus_obj,
         min_target_genes=10,

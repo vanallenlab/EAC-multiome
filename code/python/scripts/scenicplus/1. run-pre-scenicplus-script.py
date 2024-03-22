@@ -49,80 +49,17 @@ def get_args():
 
 
 def main():
+
     args = get_args()
     print(f"Running on sample {args.samplename} with n_cpus = {args.ncpus}")
-    work_dir = pl.Path("/add/path/here")
+    work_dir = pl.Path("/add/path/here/")
     os.makedirs(work_dir, exist_ok=True)
 
-    basedir = pl.Path("/add/path/here")
-    atacdir = pl.Path(basedir / "atac_data/")
-    macsdir = pl.Path(basedir / "Seurat-atac" / "macs2_output")
-
-    refined_annotations = pd.read_csv(
-        basedir / "refined_wCNMF_programs_and_sampleid.csv", index_col=0
-    )
+    atacdir = pl.Path("/add/path/here/")
+    macsdir = pl.Path("/add/path/here/")
 
     print("Downloading scRNA-seq data...")
-    datadir = basedir / "full_scrna_data"
-    adata = sc.read_h5ad(datadir / "full_cohort.h5ad")
-
-    adata.obs = pd.concat(
-        [
-            adata.obs,
-            refined_annotations[
-                ["refined_annotation", "refined_wcancer", "highlevel_annotation"]
-            ],
-        ],
-        axis=1,
-    )
-
-    treatment_mapping = {
-        "Neoadjuvant CROSS": "Neoadj. chemo",
-        "Neoadjuvent carboplatin": "Neoadj. chemo",
-    }
-
-    clinical = pd.read_csv(basedir / "EAC_clinical_info.csv", index_col=0)
-
-    metastatic = (clinical["Tumor?"] == "Yes ") & (
-        clinical["Site"].str.contains("metastasis")
-    )
-    metastatic.name = "Metastatic?"
-    clinical["Metastatic?"] = metastatic
-
-    clinical["Location"] = clinical["Site"].replace(
-        {"GEJ": "Esophagus/GEJ", "Esophagus": "Esophagus/GEJ"}
-    )
-    clinical["Location"][clinical["Location"].str.contains("Liver")] = "Liver"
-    clinical["Location"][clinical["Location"].str.contains("Adrenal")] = "Adrenal gland"
-    clinical["Location"][clinical["Location"].str.contains("Peritoneal")] = "Peritoneum"
-
-    clinical["Stage"] = clinical["Grade/stage"].replace(
-        {
-            "Stage IV ": "IV",
-            "Stage IV": "IV",
-            "Moderately differentiated; ypT1aN0": "I",
-            "Moderately differentiated; pT1aN0": "I",
-            "Poorly differentiated; ypT2N0": "II",
-            "Presented with stage III became stage IV during esophagectomy when pleural metastases were identified": "III/IV",
-        }
-    )
-
-    clinical["Treatment"] = [
-        "Neoadj. chemo",
-        "None",
-        "Neoadj. chemo + ICI + RT",
-        "None",
-        "None",
-        "Chemo + HER2 targeted + ICI",
-        "Neoadj. chemo + HER2 targeted",
-        "Neoadj. chemo + ICI",
-        "None",
-        "Neoadj. chemo + VEGFR2i",
-    ]
-
-    clinical["HER2 status"] = clinical["HER2"].replace({"HER 2 1+": "1+/equivocal"})
-
-    clinical = clinical.sort_values(by=["Tumor?", "Metastatic?", "Location"])
+    adata = sc.read_h5ad("/add/path/here/full_cohort.h5ad")
 
     sample_name = args.samplename
 
@@ -133,7 +70,7 @@ def main():
     sampledir = atacdir / sample_name
 
     cell_data = adata[adata.obs.sample_id == sample_name].obs.copy()
-    cell_data["refined_wcancer"] = cell_data["refined_wcancer"].astype(
+    cell_data["highlevel_celltype"] = cell_data["highlevel_celltype"].astype(
         str
     )  # set data type of the celltype column to str, otherwise the export_pseudobulk function will complain.
 
@@ -144,7 +81,7 @@ def main():
     path_to_regions = {
         sample_name: os.path.join(macsdir, sample_name, f"{sample_name}.bed")
     }
-    path_to_blacklist = "/add/path/here"
+    path_to_blacklist = "/add/path/here/hg38-blacklist.v2.bed"
     metadata_bc = {
         sample_name: pd.read_csv(sampledir / "per_barcode_metrics.csv", index_col=0)
     }
@@ -167,7 +104,7 @@ def main():
 
     pickle.dump(cistopic_obj, open(work_dir / sample_name / "cistopic_obj.pkl", "wb"))
 
-    tmp_dir = "/add/path/here"
+    tmp_dir = "/add/path/here/"
     cistopic_obj = pickle.load(open(work_dir / sample_name / "cistopic_obj.pkl", "rb"))
 
     models = run_cgs_models(
@@ -217,31 +154,14 @@ def main():
     )
     #
 
-    middle_annotations = cistopic_obj.cell_data.copy()
-
-    middle_annotations.highlevel_annotation[
-        middle_annotations.highlevel_annotation == "Carcinoma"
-    ] = np.nan
-
-    middle_annotations = middle_annotations.highlevel_annotation.fillna(
-        middle_annotations["refined_wcancer"]
-    )
-
-    smallgroups = middle_annotations.value_counts()[
-        (middle_annotations.value_counts()) < 20
-    ].index
-    smallgroup_mapping = {k: "Other" for k in smallgroups}
-
-    middle_annotations = middle_annotations.replace(smallgroup_mapping)
-
-    cistopic_obj.cell_data["highlevel_wcancer"] = middle_annotations.str.replace(
-        "/", "_"
-    )
+    cistopic_obj.cell_data["highlevel_celltype"] = cistopic_obj.cell_data[
+        "highlevel_celltype"
+    ].str.replace("/", "_")
 
     markers_dict = find_diff_features(
         cistopic_obj,
         imputed_acc_obj,
-        variable="highlevel_wcancer",
+        variable="highlevel_celltype",
         var_features=variable_regions,
         split_pattern="-",
     )
@@ -329,15 +249,22 @@ def main():
     for k in todel:
         del region_sets[k]
 
-    auxiliarypath = pl.Path(basedir / "pycistarget_resources/")
+    auxiliarypath = pl.Path("/add/path/here/")
+    # corresponds to Screen v10 region-based databases, SCENIC+, #1
     rankings_db = (
         auxiliarypath / "hg38_screen_v10_clust.regions_vs_motifs.rankings.feather"
     )
+    # corresponds to Screen v10 region-based databases, SCENIC+, #2
     scores_db = auxiliarypath / "hg38_screen_v10_clust.regions_vs_motifs.scores.feather"
+    # corresponds to Motif v10 annotation, SCENIC+
     motif_annotation = auxiliarypath / "motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl"
 
     os.makedirs(work_dir / sample_name / "motifs", exist_ok=True)
+    # running with custom species because no connection to internet through cluster
+    # however could just be run with species="homo_sapiens" in which case the custom_annot
+    # argument doesn't have to be populated with annot_dem.
 
+    # corresponds to Annotation for local pycisTarget run
     annot_dem = pd.read_csv(auxiliarypath / "annot_ensembl.csv", index_col=0)
 
     run_pycistarget(
@@ -357,4 +284,5 @@ def main():
 
 
 if __name__ == "__main__":
+
     main()
