@@ -78,5 +78,19 @@ The SCENIC method needs to be run on the three external datasets at this point. 
 - `eac_tcga_dir = pl.Path("/add/path/here/")`: path to the directory where all the TCGA-related files linked in the main [README](https://github.com/vanallenlab/EAC-multiome/blob/main/README.md) are located.
 - `signature_dir = pl.Path("/add/path/here/signatures_canceronly")`: path to where the cancer-specific signatures computed in the analysis notebook [`6. cancer-specific-signature.ipynb`](https://github.com/vanallenlab/EAC-multiome/blob/main/code/python/notebooks/analysis/6.%20cancer-specific-signature.ipynb) were saved.
 
+#### NEED TO RUN BAYESPRISM
 
+At this point, you need to have run the R scripts of BayesPrism (see more instructions [here](https://github.com/vanallenlab/EAC-multiome/blob/main/code/R/scripts/BayesPrism/README.md). 
 
+##8. `Link-States-Ecotypes-BayesPrism.ipynb`
+
+- `tcga_dir = pl.Path("/add/path/here/")`: path to the directory where all the TCGA-related files linked in the main [README](https://github.com/vanallenlab/EAC-multiome/blob/main/README.md) are located.
+Same as for the [`7. TCGA-bulk-validation.ipynb`](https://github.com/vanallenlab/EAC-multiome/blob/main/code/python/notebooks/validation/7.%20TCGA-bulk-validation.ipynb) script.
+- `bp_eac = pd.read_csv("/add/path/here/eac_purity.csv",index_col=0)`: this is the path to the results of BayesPrism for TCGA deconvolution.
+- `bp_eac_gse = pd.read_csv("/add/path/here/eac_gse_purity.csv",index_col=0)`: this is the path to the results of BayesPrism for Hoefnagel et al. deconvolution
+- `bp_eac_carroll = pd.read_csv("/add/path/here/eac_carroll_purity.csv",index_col=0)`: this is the path to the results of BayesPrism for Carroll et al. deconvolution
+- `purity = pd.read_csv("/add/path/here/TCGA_absolute_purity.txt",index_col=0,sep="\t")` this is the path to the ABSOLUTE estimated purity of TCGA samples. (**DWNL**)
+- `gex_df = pd.read_csv("/add/path/here/GSE207526_110.EAC.and.10.Normal.for.GSEA.txt",sep="\t").iloc[1:,:].T`: path to where the Hoefnagel et al. was downloaded (**DWNL**).
+- `gencode_mapping = pd.read_csv("/add/path/here/gencode_v41_positions.csv",index_col=0)`: this file is a subset of the Gencode annotation v41 that contains "seqname", "gene_name", "start", "end", "strand", and "gene_id". (**DWNL**)
+- `gex_df2 = pd.read_csv("/add/path/here/bulk_preprocessed.csv",index_col=0).T`: this is the path to where the Carroll et al. bulk dataset **after preprocessing** was saved. In practice, this means the LUD2015-005_RNAseq_featureCounts.tsv was simply transformed to keep only the genes on the rows and the patients on the columns. *Note: this data may vary depending on the exact processing performed on the Carroll et al. dataset* (**DWNL**)
+- `signature_dir = pl.Path("/add/path/here/signatures_canceronly/")`: path to where the cancer-specific signatures computed in the analysis notebook [`6. cancer-specific-signature.ipynb`](https://github.com/vanallenlab/EAC-multiome/blob/main/code/python/notebooks/analysis/6.%20cancer-specific-signature.ipynb) were saved.
