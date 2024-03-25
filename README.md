@@ -12,6 +12,8 @@ Then, one needs to run the scripts in order, as some intermediate files generate
 
 The order to run scripts is depicted in the following illustration: 
 
+![alt text](https://github.com/vanallenlab/EAC-multiome/blob/main/github-reproducibility-graph.png)
+
 Instructions to replace placeholders are given in the README of each folder. Information on where to download all the data needed to reproduce the analysis is found in the following sections.
 
 If there are any questions about code or issues to reproduce the analysis, please contact josephine.yates@inf.ethz.ch.
