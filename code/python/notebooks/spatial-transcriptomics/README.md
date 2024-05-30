@@ -16,7 +16,7 @@ These notebooks should be run in the following order:
 
 ## **HERE the cell2loc scripts should be run** (see instructions [here](https://github.com/vanallenlab/EAC-multiome/tree/main/code/python/scripts/cell2loc))
 
-## 2. `SpatialData_CNVanalysis.ipynb`
+## 2. `SpatialData_analysis.ipynb`
 
 - `spatial_dir = pl.Path("/add/path/here/SpaceRanger_output/")`: path to the where the spatial data is saved (**DWNL**). Should contain one folder per sample named "sample_name".
 - `cell2location_results_dir = pl.Path("/add/path/here/Cell2Location_results/")`: path to where the cell2location results were saved after running [`script-cell2loc.py`](https://github.com/vanallenlab/EAC-multiome/blob/main/code/python/scripts/cell2loc/script-cell2loc.py). 
