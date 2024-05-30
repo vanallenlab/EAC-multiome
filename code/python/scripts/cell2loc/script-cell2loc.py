@@ -45,9 +45,7 @@ def main():
     print(f"Running on patient {args.patient}")
     patient_name = args.patient
 
-    spatial_dir = pl.Path(
-        "/add/path/here/"
-    )
+    spatial_dir = pl.Path("/add/path/here/")
 
     inf_aver = pd.read_csv(
         "/add/path/here/mean-expression-per-celltype.csv",

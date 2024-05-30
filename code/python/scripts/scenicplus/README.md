@@ -1,6 +1,6 @@
 # EAC-multiome
 
-This subfolder contains the scripts to run the pyscenicplus analysis as well as the bash scripts used to run them.
+This subfolder contains the scripts to run the pyscenicplus analysis as well as the bash scripts used to run them. The bash script are run on a SLURM system and are given as examples.
 
 First, SCENIC+ must be installed using the instructions [here](https://github.com/aertslab/scenicplus). 
 Then, the auxiliary resources needed for running SCENIC+ must be downloaded. All the information about files that need to be downloaded for SCENIC and SCENIC+ is given in the [main README](https://github.com/vanallenlab/EAC-multiome/blob/main/README.md). Data that needs to be downloaded prior to running the scripts is indicated by the (**DWNL**) tag.
