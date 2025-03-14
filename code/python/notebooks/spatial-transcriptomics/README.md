@@ -53,10 +53,10 @@ These notebooks should be run in the following order:
 - `adata.write("/add/path/here/Xenium/processed/full_adata_annotated.h5ad")` and `adata = sc.read_h5ad("/add/path/here/Xenium/processed/full_adata_annotated.h5ad")`: path to where to save the full data.
 - `cnmf_sig_dir = pl.Path('/add/path/here/cNMF_malignant_genes_new_cosine/')`: path to where the lists with the cNMF genes ranked according to their contributions are saved.
 
-##7. `SOPA-Xenium-viz.ipynb`
+## 7. `SOPA-Xenium-viz.ipynb`
 
 - `figdir = pl.Path("/add/path/here/figures/xenium/")`: where to save the figures.
 - `cnmf_sig_dir = pl.Path('/add/path/here/cNMF_malignant_genes_new_cosine')`: path to where the lists with the cNMF genes ranked according to their contributions are saved.
 - `cellchat_df = pd.read_csv("/add/path/here/auxiliary_data/cellchat_database.csv",index_col=0)`: path to where the CellChat database dataframe is saved (provided in the auxiliary_data). 
-- `full_adata = sc.read_h5ad("/add/path/here/Xenium/processed/full_adata_annotated.h5ad")`: path to where the full Xenium data was saved in [`SOPA-Xenium-CellCharter.ipynb`](https://github.com/vanallenlab/EAC-multiome/blob/main/code/python/notebooks/spatial-transcriptomics/4.%20SOPA-xenium-CellCharter.ipynb)
+- `full_adata = sc.read_h5ad("/add/path/here/Xenium/processed/full_adata_annotated.h5ad")`: path to where the full Xenium data was saved in [`SOPA-Xenium-CellCharter.ipynb`](https://github.com/vanallenlab/EAC-multiome/blob/main/code/python/notebooks/spatial-transcriptomics/6.%20SOPA-Xenium-CellCharter.ipynb)
 
