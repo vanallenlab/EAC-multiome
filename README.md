@@ -1,6 +1,6 @@
 # EAC-multiome
 
-This repository accompanies the work "Cell states and neighborhoods in distinct clinical stages of primary and metastatic esophageal adenocarcinoma" (ref)
+This repository accompanies the "Cell states and neighborhoods in distinct clinical stages of primary and metastatic esophageal adenocarcinoma" ([paper](https://www.biorxiv.org/content/10.1101/2024.08.17.608386v3))
 It contains all the code necessary to reproduce the analyses. 
 Each subsection contains a README that contains a description of the path placeholders. 
 
@@ -23,7 +23,7 @@ If there are any questions about code or issues to reproduce the analysis, pleas
 
 ## Patient ID to sample ID mapping
 
-In the original paper, for simplicity patients are referred to as P1 through P10. In the scripts/notebooks the patients are referred to using their sample ID. The mapping is provided below.
+In the original paper, for simplicity patients are referred to as P1 through P13. In the scripts/notebooks the patients are referred to using their sample ID for patients sampled through snRNA+ATAC-seq. The mapping is provided below.
 | Patient ID             | Sample ID                  |
 |---------------------|--------------------------------|
 | P1   | CCG1153_4496262   |
@@ -41,8 +41,8 @@ In the original paper, for simplicity patients are referred to as P1 through P10
 
 | Dataset             | Link to paper                  | Link to download                 | Remarks          | 
 |---------------------|--------------------------------|---------------------------------|------------------|
-| Discovery dataset, sn 10X multiome    | [Yates et al., ???](TBD)    | [Download](http://example.com)  |     |
-| Discovery dataset, ST 10X Visium    | [Yates et al., ???](TBD)    | [Download](http://example.com)  |     |
+| Discovery dataset, sn 10X multiome    | [Yates et al., 2024](https://www.biorxiv.org/content/10.1101/2024.08.17.608386v3)    | [Download](https://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=phs003438.v1.p1)  |     |
+| Discovery dataset, ST 10X Visium and Xenium    | [Yates et al., 2024](https://www.biorxiv.org/content/10.1101/2024.08.17.608386v3)    | NA |   Need to request access from the author  |
 | Single-cell, Carroll et al.     | [Carroll et al., 2023](https://www.sciencedirect.com/science/article/pii/S1535610823002167?via%3Dihub)    | [Download](https://ega-archive.org/datasets/EGAD00001009401)  | Need to request access to data through EGA  / contact author (thomas.carroll@alumni.rice.edu)  |
 | Bulk, Carroll et al., RNA   | [Carroll et al., 2023](https://www.sciencedirect.com/science/article/pii/S1535610823002167?via%3Dihub)    | [Download](https://ega-archive.org/datasets/EGAD00001009399)  | Need to request access to data through EGA  / contact author (thomas.carroll@alumni.rice.edu)  |
 | Bulk, Carroll et al., Clinical   | [Carroll et al., 2023](https://www.sciencedirect.com/science/article/pii/S1535610823002167?via%3Dihub)     | [Download](https://bitbucket.org/licroxford/carroll_etal_2023/src/master/supplementary_files/Table_S8_papermetadata.xlsx)  | Inoperable cohort info is located [here](https://bitbucket.org/licroxford/carroll_etal_2023/src/master/supplementary_files/SuppInfo_OperablePts_LUD2015scRNAseq.xlsx)   |
