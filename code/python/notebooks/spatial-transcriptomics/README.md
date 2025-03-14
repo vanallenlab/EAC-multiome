@@ -57,6 +57,13 @@ These notebooks should be run in the following order:
 
 - `figdir = pl.Path("/add/path/here/figures/xenium/")`: where to save the figures.
 - `cnmf_sig_dir = pl.Path('/add/path/here/cNMF_malignant_genes_new_cosine')`: path to where the lists with the cNMF genes ranked according to their contributions are saved.
-- `cellchat_df = pd.read_csv("/add/path/here/auxiliary_data/cellchat_database.csv",index_col=0)`: path to where the CellChat database dataframe is saved (provided in the auxiliary_data). 
+- `cellchat_df = pd.read_csv("/add/path/here/auxiliary_data/cellchat_database.csv",index_col=0)`: path to where the CellChat database is saved. Instructions are in the main README for download.
 - `full_adata = sc.read_h5ad("/add/path/here/Xenium/processed/full_adata_annotated.h5ad")`: path to where the full Xenium data was saved in [`SOPA-Xenium-CellCharter.ipynb`](https://github.com/vanallenlab/EAC-multiome/blob/main/code/python/notebooks/spatial-transcriptomics/6.%20SOPA-Xenium-CellCharter.ipynb)
-
+ ## 8. `COMMOT.ipynb`
+ 
+ - `spatial_dir = pl.Path("/add/path/here/SpaceRanger_output/")`: path to the where the spatial data is saved (**DWNL**). Should contain one folder per sample named "sample_name".
+ - `cell2location_results_dir = pl.Path("/add/path/here/Cell2Location_results/")`: path to where the Cell2Location results from the notebook were saved [`Cell2Location.ipynb`](https://github.com/vanallenlab/EAC-multiome/blob/main/code/python/notebooks/spatial-transcriptomics/1.%20Cell2Location.ipynb).
+ - `df_cellchat = pd.read_csv("/add/path/here/auxiliary_data/cellchat_database.csv",index_col=0)`: path to where the CellChat database is saved. Instructions are in the main README for download.
+ - `signature_dir = pl.Path("/add/path/here/cNMF_malignant_genes_new_cosine/")`: path to where the lists with the cNMF genes ranked according to their contributions are saved.
+- `caf_dir = pl.Path("/add/path/here/marker_genes/fibroblast/")`: path to where the marker genes for the stromal component are saved.
+- `myeloid_dir = pl.Path("/add/path/here/marker_genes/myeloid/")`: path to where the marker genes for the myeloid component are saved.
