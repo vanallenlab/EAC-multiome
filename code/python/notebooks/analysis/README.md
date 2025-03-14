@@ -83,4 +83,9 @@ The next script analyses the results from the SCENIC+ analysis. More info on run
 - `df.to_csv(f"/add/path/here/{state}_triad_corr.csv")`: path to where to save the results of the correlation analysis.
 - `pd.DataFrame(df_toptfs).to_csv("/add/path/here/toptfs_top20.csv")`: path to where to save the top 20 candidate mTFs per program
 
+## 10. `scTherapy.ipynb`
 
+- `adata = sc.read_h5ad("/add/path/here/full_cohort.h5ad")`: path to where the full cleaned cohort `.h5ad` object was saved in [`tme-cleaning-analysis.ipynb`](https://github.com/vanallenlab/EAC-multiome/blob/main/code/python/notebooks/analysis/2.%20tme-cleaning-analysis.ipynb)
+- `refined_annotations = pd.read_csv("/add/path/here/refined_annotations.csv", index_col=0)`: path to where the refined annotations derived from [`tme-cleaning-analysis.ipynb`](https://github.com/vanallenlab/EAC-multiome/blob/main/code/python/notebooks/analysis/2.%20tme-cleaning-analysis.ipynb) are saved.
+- `cNMF_scores_wtop = pd.read_csv("/add/path/here/adata_cNMF_scores_wtop.csv",index_col=0)`: path to where the annotations that also indicate the top 5% cells that express a specific cNMF program are saved. 
+- `sctherapy_res_dir = "/add/path/here/auxiliary_data/scTherapy-results"`: path to where to save the results.

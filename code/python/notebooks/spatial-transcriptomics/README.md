@@ -1,6 +1,6 @@
 # EAC-multiome
 
-This folder contains all notebooks used for the analysis of the spatial transcriptomics (10X Visium) data of the subset of the discovery cohort. 
+This folder contains all notebooks used for the analysis of the spatial transcriptomics 10X Visium data of the subset of the discovery cohort, as well as the spatial transcriptomics 10X Xenium data.
 
 The information to download the counts for the datasets as well as all auxiliary files are located in the [related subsections of the README](https://github.com/vanallenlab/EAC-multiome/blob/main/README.md). Data that needs to be downloaded prior to running the scripts is indicated by the (**DWNL**) tag.
 
@@ -32,4 +32,31 @@ These notebooks should be run in the following order:
 
 - `spatial_dir = pl.Path("/add/path/here/SpaceRanger_output/")`: path to the where the spatial data is saved (**DWNL**). Should contain one folder per patient named "patient_name".
 - `cell2location_results_dir = pl.Path("/add/path/here/Cell2Location_results/")`: path to where the cell2location results were saved. 
+
+## 4. `SOPA-Xenium-cellpose.ipynb`
+
+- `adata_reference = anndata.read_h5ad("/add/path/here/full_cohort.h5ad")`: path to where the full cleaned cohort `.h5ad` object was saved in [`tme-cleaning-analysis.ipynb`](https://github.com/vanallenlab/EAC-multiome/blob/main/code/python/notebooks/analysis/2.%20tme-cleaning-analysis.ipynb)
+- `refined_annotations = pd.read_csv("/add/path/here/refined_annotations.csv",index_col=0)`: path to where the refined annotations derived from [`tme-cleaning-analysis.ipynb`](https://github.com/vanallenlab/EAC-multiome/blob/main/code/python/notebooks/analysis/2.%20tme-cleaning-analysis.ipynb) were saved. 
+- `datapath = "/add/path/here/"`: path to where the Xenium output data folder is (this should contain all standard 10X outputs). (**DWNL**)
+- `savedir = "/add/path/here/Xenium/processed"`: where the resegmented data will be saved.
+
+## 5. `SOPA-Xenium-celltype.ipynb`
+
+- `adata_reference = anndata.read_h5ad("/add/path/here/full_cohort.h5ad")`: path to where the full cleaned cohort `.h5ad` object was saved in [`tme-cleaning-analysis.ipynb`](https://github.com/vanallenlab/EAC-multiome/blob/main/code/python/notebooks/analysis/2.%20tme-cleaning-analysis.ipynb)
+- `refined_annotations = pd.read_csv("/add/path/here/refined_annotations.csv",index_col=0)`: path to where the refined annotations derived from [`tme-cleaning-analysis.ipynb`](https://github.com/vanallenlab/EAC-multiome/blob/main/code/python/notebooks/analysis/2.%20tme-cleaning-analysis.ipynb) were saved. 
+- `adata = sc.read_h5ad("/add/path/here/Xenium/processed/Xenium_XX_annot.h5ad")`: the path to where the data generated with the [`SOPA-Xenium-cellpose.ipynb`](https://github.com/vanallenlab/EAC-multiome/blob/main/code/python/notebooks/spatial-transcriptomics/4.%20SOPA-Xenium-cellpose.ipynb) notebook is located.
+
+## 6. `SOPA-Xenium-CellCharter.ipynb`
+
+- `figdir = pl.Path("/add/path/here/figures/xenium/")`: path to where the figures will be saved.
+- `datadir = pl.Path("/add/path/here/Xenium/processed/")`: path to where the data was saved in [`SOPA-Xenium-cellpose.ipynb`](https://github.com/vanallenlab/EAC-multiome/blob/main/code/python/notebooks/spatial-transcriptomics/4.%20SOPA-Xenium-cellpose.ipynb)
+- `adata.write("/add/path/here/Xenium/processed/full_adata_annotated.h5ad")` and `adata = sc.read_h5ad("/add/path/here/Xenium/processed/full_adata_annotated.h5ad")`: path to where to save the full data.
+- `cnmf_sig_dir = pl.Path('/add/path/here/cNMF_malignant_genes_new_cosine/')`: path to where the lists with the cNMF genes ranked according to their contributions are saved.
+
+##7. `SOPA-Xenium-viz.ipynb`
+
+- `figdir = pl.Path("/add/path/here/figures/xenium/")`: where to save the figures.
+- `cnmf_sig_dir = pl.Path('/add/path/here/cNMF_malignant_genes_new_cosine')`: path to where the lists with the cNMF genes ranked according to their contributions are saved.
+- `cellchat_df = pd.read_csv("/add/path/here/auxiliary_data/cellchat_database.csv",index_col=0)`: path to where the CellChat database dataframe is saved (provided in the auxiliary_data). 
+- `full_adata = sc.read_h5ad("/add/path/here/Xenium/processed/full_adata_annotated.h5ad")`: path to where the full Xenium data was saved in [`SOPA-Xenium-CellCharter.ipynb`](https://github.com/vanallenlab/EAC-multiome/blob/main/code/python/notebooks/spatial-transcriptomics/4.%20SOPA-Xenium-CellCharter.ipynb)
 
