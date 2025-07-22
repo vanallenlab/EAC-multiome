@@ -3,6 +3,7 @@
 This repository accompanies the "Cell states and neighborhoods in distinct clinical stages of primary and metastatic esophageal adenocarcinoma" ([paper](https://www.biorxiv.org/content/10.1101/2024.08.17.608386v3))
 It contains all the code necessary to reproduce the analyses. 
 Each subsection contains a README that contains a description of the path placeholders. 
+It also contains in the `signatures` folder the cNMF and TME signatures used in the paper.
 
 ## How to reproduce the analyses
 
