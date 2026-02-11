@@ -1,6 +1,6 @@
 # EAC-multiome
 
-This repository accompanies the "Cell states and neighborhoods in distinct clinical stages of primary and metastatic esophageal adenocarcinoma" ([paper](https://www.biorxiv.org/content/10.1101/2024.08.17.608386v3))
+This repository accompanies the "Cell states and neighborhoods in distinct clinical stages of primary and metastatic esophageal adenocarcinoma" ([paper](https://www.cell.com/cell-reports-medicine/fulltext/S2666-3791(25)00261-7))
 It contains all the code necessary to reproduce the analyses. 
 Each subsection contains a README that contains a description of the path placeholders. 
 It also contains in the `signatures` folder the cNMF and TME signatures used in the paper.
